@@ -11,7 +11,7 @@ export default async function Home() {
       <main className="max-w-md mx-auto bg-white rounded-2xl shadow-xl overflow-hidden border border-gray-100">
         <div className="p-6 bg-blue-600">
           <h1 className="text-2xl font-bold text-white">Project Tasks</h1>
-          <p className="text-blue-100 text-sm">Next.js 15 + External API</p>
+          <p className="text-blue-100 text-sm">Learning Next js</p>
         </div>
 
         <div className="p-6">

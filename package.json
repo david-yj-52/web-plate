@@ -1,0 +1,37 @@
+{
+  "name": "tsh-web-plate",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev --turbo",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
+  },
+  "dependencies": {
+    "axios": "^1.7.9",
+    "clsx": "^2.1.1",
+    "lucide-react": "^0.460.0",
+    "next": "15.1.0",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "tailwind-merge": "^2.5.5",
+    "zustand": "^5.0.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.14.0",
+    "@types/react": "^19.0.0",
+    "@types/react-dom": "^19.0.0",
+    "autoprefixer": "^10.4.20",
+    "eslint": "^9.0.0",
+    "eslint-config-next": "15.1.0",
+    "postcss": "^8.4.49",
+    "tailwindcss": "^3.4.19",
+    "typescript": "^5.7.2"
+  },
+  "description": ".\r ├── src/\r │ ├── app/\r │ │ ├── actions.ts # Server Actions (백엔드와 통신)\r │ │ ├── layout.tsx # 전역 레이아웃\r │ │ └── page.tsx # 메인 UI (Server Component)\r │ ├── components/\r │ │ └── TodoItem.tsx # 개별 할 일 (Client Component)\r │ └── lib/\r │ └── api.ts # 외부 API 호출 유틸리티\r ├── .env # 환경 변수 (백엔드 주소 설정)\r └── package.json # 의존성 설정",
+  "main": "index.js",
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}

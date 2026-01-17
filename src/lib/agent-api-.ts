@@ -1,4 +1,5 @@
-const AGENT_BASE_URL = process.env.LOCAL_URL || "http://127.0.0.1:8080";
+const AGENT_BASE_URL =
+  process.env.NEXT_PUBLIC_LOCAL_URL || "http://127.0.0.1:8080";
 
 export const agentApi = {
   async checkStatus() {

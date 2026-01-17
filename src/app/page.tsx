@@ -1,13 +1,20 @@
 import TodoItem from "@/components/TodoItem";
 import { addTodos, getTodos } from "./actions";
 import AgentStatusButton from "@/components/AgentStatusButton";
+import { auth } from "@/auth";
+import LoginButton from "@/components/LoginButton";
 
 export default async function Home() {
+  const session = await auth();
   const todos = await getTodos();
+
+  if (!session) return <LoginButton />;
 
   return (
     <div className="min-h-screen bg-gray-50 py-10">
       <main className="max-w-md mx-auto bg-white rounded-2xl shadow-xl overflow-hidden border border-gray-100">
+        <p> 환영합니다, {session.user?.name} 님!</p>
+        <img src={session.user?.image || ""} alt="프로필" />
         <AgentStatusButton />
         <div className="p-6 bg-blue-600">
           <h1 className="text-2xl font-bold text-white">Project Tasks</h1>

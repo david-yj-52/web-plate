@@ -1,7 +1,6 @@
-"use server";
-
 import TodoItem from "@/components/TodoItem";
 import { addTodos, getTodos } from "./actions";
+import AgentStatusButton from "@/components/AgentStatusButton";
 
 export default async function Home() {
   const todos = await getTodos();
@@ -9,6 +8,7 @@ export default async function Home() {
   return (
     <div className="min-h-screen bg-gray-50 py-10">
       <main className="max-w-md mx-auto bg-white rounded-2xl shadow-xl overflow-hidden border border-gray-100">
+        <AgentStatusButton />
         <div className="p-6 bg-blue-600">
           <h1 className="text-2xl font-bold text-white">Project Tasks</h1>
           <p className="text-blue-100 text-sm">Learning Next js</p>

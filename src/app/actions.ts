@@ -34,5 +34,5 @@ export async function toggleTodos(id: number, currentStatus: boolean) {
     method: "PATCH",
     body: JSON.stringify({ completed: !currentStatus }),
   });
-  revalidatePath("/");
+  revalidatePath("/todo");
 }

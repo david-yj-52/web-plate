@@ -14,7 +14,7 @@ export default function RegisterPage() {
   // 1. 인증되지 않는 사용자가 접근하면 로그인 페이지로 튕겨내기
   useEffect(() => {
     if (status === "unauthenticated") {
-      router.push("/api/auth/login");
+      router.push("/login");
     }
   }, [status, router]);
 
@@ -26,9 +26,9 @@ export default function RegisterPage() {
     setIsSubmitting(true);
 
     try {
-      const result = await api.client("/api/auth/register", "POST", {
+      const result = await api.client("/user/register", "POST", {
         code: session.idToken, // token 내 유저정보가 들어있음
-        sietId: "TSH",
+        siteId: "TSH",
         userCategory: "Worker",
         socialType: "GGL",
         //  백엔드로 회원 가입 요청

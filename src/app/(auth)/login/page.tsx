@@ -1,26 +1,21 @@
-import { auth } from "@/auth";
+import { auth, signIn } from "@/auth";
 import LoginButton from "@/components/LoginButton";
-import TshLogo from "@/components/TshLogo";
 import { redirect } from "next/navigation";
 
 export default async function LoginPage() {
   const session = await auth();
-
-  // 이미 로그인된 상태라면 바로 TODO 페이지로 보냅니다.
   if (session) redirect("/todo");
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-50">
       <div className="w-full max-w-md rounded-2xl bg-white shadow-lg px-10 py-12">
-        <div className="relative mb-10">
-          <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-            <TshLogo />
-          </div>
-          <h1 className="relative z-10 text-center text-2xl md:text-3xl font-bold text-gray-900">
-            Sign in to Service TSH
+        <div className="mb-10">
+          <h1 className="flex items-center justify-center gap-3 text-2xl md:text-3xl font-bold text-gray-900">
+            <span>Sign in to Service TSH</span>
           </h1>
         </div>
 
+        {/* Google 로그인 */}
         <div className="mb-6">
           <LoginButton />
         </div>
@@ -31,23 +26,36 @@ export default async function LoginPage() {
           <div className="h-px flex-1 bg-gray-200" />
         </div>
 
-        <form className="space-y-4">
+        {/* ✅ Credentials 로그인 */}
+        <form
+          action={async (formData: FormData) => {
+            "use server";
+            await signIn("credentials", {
+              username: formData.get("username"),
+              password: formData.get("password"),
+              redirectTo: "/todo",
+            });
+          }}
+          className="space-y-4"
+        >
           <div>
             <input
-              type="email"
-              placeholder="EMAIL"
+              type="text"
+              name="username"
+              placeholder="USERNAME"
               className="w-full h-11 rounded-md border border-gray-200 bg-gray-100 px-3 text-sm text-gray-900 placeholder-gray-500 focus:bg-white focus:outline-none focus:ring-2 focus:ring-black"
             />
           </div>
           <div>
             <input
               type="password"
+              name="password"
               placeholder="PASSWORD"
               className="w-full h-11 rounded-md border border-gray-200 bg-gray-100 px-3 text-sm text-gray-900 placeholder-gray-500 focus:bg-white focus:outline-none focus:ring-2 focus:ring-black"
             />
           </div>
           <button
-            type="button"
+            type="submit"
             className="w-full h-11 rounded-md bg-black text-white text-sm font-medium hover:bg-gray-900"
           >
             Log in

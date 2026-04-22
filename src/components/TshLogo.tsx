@@ -3,7 +3,7 @@
 import Image from "next/image";
 
 export default function TshLogo({
-  className = "h-40 w-40 object-contain opacity-10",
+  className = "h-8 w-8 object-contain",
 }: {
   className?: string;
 }) {

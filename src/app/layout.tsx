@@ -21,7 +21,7 @@ export default async function RootLayout({
         <SessionProvider>
           {/* 로그인이 된 경우에만 상단 헤더를 보여줍니다. */}
           {session && <ApHeader user={session.user} />}
-          <main className="container mx-auto px-4 py-8">
+          <main className="py-6">
             <AuthCheck />
             {children}
           </main>

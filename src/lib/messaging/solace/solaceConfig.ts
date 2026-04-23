@@ -9,10 +9,10 @@ export const SOLACE_CONFIG = {
   username: "admin",
   password: "admin",
   clientName: "tsh-web-client",
+  responseTopic: "TET/REP/user-1", // ✅ 유저별 Topic (추후 동적으로)
 } as const;
 
 // 발송 Topic
 export const TOPICS = {
-  REQUEST: "TET/H01",
-  RESPONSE: "befw/response", // 수신할 Topic
+  REQUEST: "TET/REQ/H01/user-1",
 } as const;

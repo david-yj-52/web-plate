@@ -194,13 +194,12 @@ export function useSolace() {
           message.setBinaryAttachment(new TextEncoder().encode(payload));
           message.setDeliveryMode(solace.MessageDeliveryModeType.DIRECT);
 
+          const payloadObj = JSON.parse(payload);
+          const evetName = payloadObj["head"]["eventNm"];
+
           // ✅ SDTMap Property
           const props = new (solace as any).SDTMapContainer();
-          props.addField(
-            "eventName",
-            solace.SDTFieldType.STRING,
-            "AddMsgServerInfo",
-          );
+          props.addField("eventName", solace.SDTFieldType.STRING, evetName);
           props.addField(
             "responseTopic",
             solace.SDTFieldType.STRING,

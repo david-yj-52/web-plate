@@ -13,6 +13,7 @@ export default function ProjectNav({ projectId }: Props) {
   const tabs = [
     { href: `/projects/${projectId}/issues`, label: "이슈" },
     { href: `/projects/${projectId}/boards`, label: "보드" },
+    { href: `/projects/${projectId}/sprints`, label: "스프린트" },
   ];
 
   return (

@@ -14,3 +14,9 @@ export interface CreateProjectRequest {
   description?: string;
   projectType: "SCRUM" | "KANBAN";
 }
+
+export interface UpdateProjectRequest {
+  name: string;
+  description?: string;
+  projectType: "SCRUM" | "KANBAN";
+}

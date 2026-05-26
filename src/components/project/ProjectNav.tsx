@@ -2,6 +2,8 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { useSession } from "next-auth/react";
+import { useProjectMembers } from "@/hooks/useProjectSettings";
 
 interface Props {
   projectId: string;
@@ -9,11 +11,23 @@ interface Props {
 
 export default function ProjectNav({ projectId }: Props) {
   const pathname = usePathname();
+  const { data: session } = useSession();
+  const { data: members } = useProjectMembers(projectId);
+
+  const currentUserEmail = session?.user?.email;
+  const isAdmin =
+    currentUserEmail != null &&
+    members?.some(
+      (m) => m.email === currentUserEmail && m.role === "ADMIN",
+    ) === true;
 
   const tabs = [
     { href: `/projects/${projectId}/issues`, label: "이슈" },
     { href: `/projects/${projectId}/boards`, label: "보드" },
     { href: `/projects/${projectId}/sprints`, label: "스프린트" },
+    ...(isAdmin
+      ? [{ href: `/projects/${projectId}/settings`, label: "설정" }]
+      : []),
   ];
 
   return (

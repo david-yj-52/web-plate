@@ -34,7 +34,7 @@ export default function LoginForm() {
     if (result?.error) {
       setServerError("이메일 또는 비밀번호가 올바르지 않습니다.");
     } else {
-      window.location.href = "/projects";
+      window.location.href = "/home";
     }
   };
 
@@ -130,7 +130,7 @@ export default function LoginForm() {
       <p className="mt-6 text-center text-sm text-slate-500">
         계정이 없으신가요?{" "}
         <Link
-          href="/register"
+          href="/cira/register"
           className="text-blue-600 font-medium hover:underline"
         >
           회원가입

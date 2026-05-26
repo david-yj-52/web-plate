@@ -8,6 +8,7 @@ import { usePathname } from "next/navigation";
 
 const NAV_ITEMS = [
   { href: "/home", label: "홈" },
+  { href: "/projects", label: "프로젝트" },
   { href: "/todo", label: "Tasks" },
   { href: "/mpms", label: "MPMS" },
 ];
@@ -28,7 +29,7 @@ export default function ApHeader({ user }: { user: any }) {
       {/* Nav */}
       <nav className="flex items-center gap-1">
         {NAV_ITEMS.map(({ href, label }) => {
-          const active = pathname === href;
+          const active = pathname === href || pathname.startsWith(href + "/");
           return (
             <Link
               key={href}

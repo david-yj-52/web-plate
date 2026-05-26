@@ -1,10 +1,10 @@
 import { auth } from "@/auth";
-import LoginForm from "@/components/auth/LoginForm";
+import RegisterForm from "@/components/auth/RegisterForm";
 import { redirect } from "next/navigation";
 
-export default async function LoginPage() {
+export default async function CiraRegisterPage() {
   const session = await auth();
   if (session) redirect("/home");
 
-  return <LoginForm />;
+  return <RegisterForm />;
 }

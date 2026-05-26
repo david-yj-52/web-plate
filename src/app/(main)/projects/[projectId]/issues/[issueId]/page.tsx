@@ -1,5 +1,6 @@
 "use client";
 
+import { CommentSection } from "@/components/issue/CommentSection";
 import { useToast } from "@/components/ui/Toast";
 import {
   useAvailableTransitions,
@@ -225,6 +226,11 @@ export default function IssueDetailPage({
               multiline
               className="text-sm text-slate-700 whitespace-pre-wrap min-h-[80px]"
             />
+          </div>
+
+          {/* Comments */}
+          <div className="border-t border-slate-100 pt-6">
+            <CommentSection issueId={issueId} />
           </div>
         </div>
 

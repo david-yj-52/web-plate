@@ -7,7 +7,8 @@ async function proxyHandler(
   { params }: { params: Promise<{ path: string[] }> },
 ) {
   const resolvedParams = await params;
-  const targetPath = `/${resolvedParams.path.join("/")}`;
+  const url = new URL(request.url);
+  const targetPath = `/${resolvedParams.path.join("/")}${url.search}`;
   const method = request.method;
 
   const session = await auth();

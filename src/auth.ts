@@ -1,45 +1,53 @@
 import NextAuth from "next-auth";
-import Google from "next-auth/providers/google";
 import Credentials from "next-auth/providers/credentials";
+
+const API_BASE_URL = process.env.BACKEND_URL;
 
 export const { handlers, auth, signIn, signOut } = NextAuth({
   providers: [
-    Google({
-      clientId: process.env.GOOGLE_CLIENT_ID,
-      clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-    }),
-
-    // ✅ Credentials provider 추가
     Credentials({
       credentials: {
-        username: { label: "Username" },
+        email: { label: "Email", type: "email" },
         password: { label: "Password", type: "password" },
       },
       async authorize(credentials) {
-        if (
-          credentials?.username === "admin" &&
-          credentials?.password === "admin"
-        ) {
+        if (!credentials?.email || !credentials?.password) return null;
+        try {
+          const res = await fetch(`${API_BASE_URL}/v1/auth/login`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              email: credentials.email,
+              password: credentials.password,
+            }),
+          });
+          if (!res.ok) return null;
+          const json = await res.json();
+          if (!json.success) return null;
+          const data = json.data;
           return {
-            id: "1",
-            name: "Admin",
-            email: "admin@tsh.com",
+            id: credentials.email as string,
+            email: credentials.email as string,
+            name: credentials.email as string,
+            accessToken: data.accessToken,
           };
+        } catch {
+          return null;
         }
-        return null;
       },
     }),
   ],
 
   callbacks: {
-    async jwt({ token, account }) {
-      if (account) {
-        token.idToken = account.id_token;
+    async jwt({ token, user }) {
+      if (user) {
+        token.accessToken = (user as { accessToken?: string }).accessToken;
       }
       return token;
     },
     async session({ session, token }) {
-      session.idToken = token.idToken as string;
+      (session.user as { accessToken?: string }).accessToken =
+        token.accessToken as string | undefined;
       return session;
     },
   },
@@ -48,5 +56,5 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
     signIn: "/login",
   },
 
-  secret: process.env.NEXTAUTH_SECRET,
+  secret: process.env.AUTH_SECRET,
 });

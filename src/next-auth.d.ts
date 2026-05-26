@@ -1,17 +1,20 @@
-// next-auth.d.ts
-import { DefaultSession } from "next-auth";
+import { DefaultSession, DefaultUser } from "next-auth";
 
 declare module "next-auth" {
+  interface User extends DefaultUser {
+    accessToken?: string;
+  }
   interface Session {
-    idToken?: string; // 세션에 idToken 추가
+    idToken?: string;
     user: {
-      id?: string;
+      accessToken?: string;
     } & DefaultSession["user"];
   }
 }
 
 declare module "next-auth/jwt" {
   interface JWT {
-    idToken?: string; // JWT 토큰에 idToken 추가
+    accessToken?: string;
+    idToken?: string;
   }
 }

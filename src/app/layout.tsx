@@ -1,12 +1,11 @@
 import { auth } from "@/auth";
-import "./globals.css";
+import Providers from "@/components/Providers";
 import ApHeader from "@/components/layout/ApHeader";
-import AuthCheck from "@/components/AuthCheck";
-import { SessionProvider } from "next-auth/react";
+import "./globals.css";
 
 export const metadata = {
-  title: "My Todo App",
-  description: "Next.Js 15",
+  title: "CIRA",
+  description: "Custom Jira — CIRA",
 };
 
 export default async function RootLayout({
@@ -18,14 +17,10 @@ export default async function RootLayout({
   return (
     <html lang="ko">
       <body className="bg-gray-50 min-h-screen">
-        <SessionProvider>
-          {/* 로그인이 된 경우에만 상단 헤더를 보여줍니다. */}
+        <Providers>
           {session && <ApHeader user={session.user} />}
-          <main className="py-6">
-            <AuthCheck />
-            {children}
-          </main>
-        </SessionProvider>
+          <main className="py-6">{children}</main>
+        </Providers>
       </body>
     </html>
   );

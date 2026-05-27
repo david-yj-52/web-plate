@@ -1,6 +1,7 @@
 import { auth } from "@/auth";
 import Providers from "@/components/Providers";
 import ApHeader from "@/components/layout/ApHeader";
+import NotificationMount from "@/components/layout/NotificationMount";
 import "./globals.css";
 
 export const metadata = {
@@ -19,6 +20,7 @@ export default async function RootLayout({
       <body className="bg-gray-50 min-h-screen">
         <Providers>
           {session && <ApHeader user={session.user} />}
+          {session && <NotificationMount />}
           <main className="py-6">{children}</main>
         </Providers>
       </body>

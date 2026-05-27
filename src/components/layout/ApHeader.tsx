@@ -3,6 +3,8 @@
 import { signOut } from "next-auth/react";
 import AgentStatusButton from "../AgentStatusButton";
 import TshLogo from "../TshLogo";
+import GlobalSearch from "./GlobalSearch";
+import NotificationBell from "./NotificationBell";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
@@ -49,6 +51,9 @@ export default function ApHeader({ user }: { user: any }) {
 
       {/* Right */}
       <div className="flex h-8 items-center gap-2">
+        <GlobalSearch />
+        <div className="h-5 w-px bg-gray-200" />
+        <NotificationBell />
         <AgentStatusButton />
         <div className="h-5 w-px bg-gray-200" />
         <span className="text-sm text-gray-600">

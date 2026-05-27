@@ -46,10 +46,10 @@ export function useNotifications() {
             ["notifications", "recent"],
             (old) => [notification, ...(old ?? [])].slice(0, 10),
           );
-          queryClient.invalidateQueries({ queryKey: ["notifications"] });
-          queryClient.invalidateQueries({
-            queryKey: ["notifications-unread-count"],
-          });
+          queryClient.setQueryData<number>(
+            ["notifications-unread-count"],
+            (old) => (old ?? 0) + 1,
+          );
           show(notification.title, "success");
         } catch {
           // ignore malformed SSE payloads
@@ -83,7 +83,7 @@ export function useNotifications() {
       esRef.current?.close();
       esRef.current = null;
     };
-  }, [session]);
+  }, [session?.user?.id]);
 
   return { ToastComponent };
 }

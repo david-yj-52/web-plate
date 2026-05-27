@@ -25,6 +25,7 @@ export default function ProjectNav({ projectId }: Props) {
     { href: `/projects/${projectId}/issues`, label: "이슈" },
     { href: `/projects/${projectId}/boards`, label: "보드" },
     { href: `/projects/${projectId}/sprints`, label: "스프린트" },
+    { href: `/projects/${projectId}/reports`, label: "리포트" },
     ...(isAdmin
       ? [{ href: `/projects/${projectId}/settings`, label: "설정" }]
       : []),

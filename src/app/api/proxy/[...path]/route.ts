@@ -37,8 +37,8 @@ async function proxyHandler(
   } catch (error: any) {
     console.error(`Proxy Error (${method} ${targetPath}):`, error);
     return NextResponse.json(
-      { error: error.message || "Internal Server Error" },
-      { status: 500 },
+      error.body || { error: error.message || "Internal Server Error" },
+      { status: error.status || 500 },
     );
   }
 }

@@ -28,7 +28,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
           return {
             id: credentials.email as string,
             email: credentials.email as string,
-            name: credentials.email as string,
+            name: data.user.name as string,
             accessToken: data.accessToken,
           };
         } catch {

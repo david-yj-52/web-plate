@@ -14,7 +14,13 @@ export const api = {
         ...options?.headers,
       },
     });
-    if (!res.ok) throw new Error(`Backend API Error: ${res.status}`);
+    if (!res.ok) {
+      const body = await res.json().catch(() => ({ error: res.statusText }));
+      const err: any = new Error(`Backend API Error: ${res.status}`);
+      err.status = res.status;
+      err.body = body;
+      throw err;
+    }
     return res.json();
   },
 

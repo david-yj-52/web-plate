@@ -19,6 +19,7 @@
     "react": "19.0.1",
     "react-dom": "19.0.1",
     "react-hook-form": "^7.76.1",
+    "react-markdown": "^10.1.0",
     "solclientjs": "^10.18.3",
     "tailwind-merge": "^2.5.5",
     "zod": "^4.4.3",

@@ -1,13 +1,13 @@
 "use client";
 
 import AssignIssueModal from "@/components/sprint/AssignIssueModal";
+import CompleteSprintModal from "@/components/sprint/CompleteSprintModal";
 import CreateSprintModal from "@/components/sprint/CreateSprintModal";
 import EditSprintModal from "@/components/sprint/EditSprintModal";
 import ProjectNav from "@/components/project/ProjectNav";
 import { useToast } from "@/components/ui/Toast";
 import { SkeletonCard } from "@/components/ui/Skeleton";
 import {
-  useCompleteSprint,
   useDeleteSprint,
   useRemoveIssueFromSprint,
   useSprints,
@@ -42,10 +42,9 @@ interface SprintCardProps {
   onEdit: (sprint: SprintResponse) => void;
   onAssign: (sprint: SprintResponse) => void;
   onStart: (sprintId: string) => void;
-  onComplete: (sprintId: string) => void;
+  onComplete: (sprint: SprintResponse) => void;
   onDelete: (sprintId: string) => void;
   isStarting: boolean;
-  isCompleting: boolean;
   isDeleting: boolean;
 }
 
@@ -58,7 +57,6 @@ function SprintCard({
   onComplete,
   onDelete,
   isStarting,
-  isCompleting,
   isDeleting,
 }: SprintCardProps) {
   const [expanded, setExpanded] = useState(false);
@@ -108,11 +106,10 @@ function SprintCard({
           )}
           {sprint.status === "ACTIVE" && (
             <button
-              onClick={() => onComplete(sprint.id)}
-              disabled={isCompleting}
-              className="h-8 px-3 rounded-lg bg-blue-600 text-white text-xs font-semibold hover:bg-blue-700 disabled:opacity-60"
+              onClick={() => onComplete(sprint)}
+              className="h-8 px-3 rounded-lg bg-blue-600 text-white text-xs font-semibold hover:bg-blue-700"
             >
-              {isCompleting ? "완료 중..." : "완료"}
+              완료
             </button>
           )}
           {sprint.status !== "COMPLETED" && (
@@ -223,10 +220,10 @@ export default function SprintsPage({
   const [showCreate, setShowCreate] = useState(false);
   const [editTarget, setEditTarget] = useState<SprintResponse | null>(null);
   const [assignTarget, setAssignTarget] = useState<SprintResponse | null>(null);
+  const [completeTarget, setCompleteTarget] = useState<SprintResponse | null>(null);
   const [actionId, setActionId] = useState<string | null>(null);
 
   const { mutate: startSprint, isPending: isStarting } = useStartSprint(projectId);
-  const { mutate: completeSprint, isPending: isCompleting } = useCompleteSprint(projectId);
   const { mutate: deleteSprint, isPending: isDeleting } = useDeleteSprint(projectId);
 
   const handleStart = (sprintId: string) => {
@@ -234,15 +231,6 @@ export default function SprintsPage({
     startSprint(sprintId, {
       onSuccess: () => show("스프린트가 시작되었습니다."),
       onError: () => show("스프린트 시작에 실패했습니다.", "error"),
-      onSettled: () => setActionId(null),
-    });
-  };
-
-  const handleComplete = (sprintId: string) => {
-    setActionId(sprintId);
-    completeSprint(sprintId, {
-      onSuccess: () => show("스프린트가 완료되었습니다."),
-      onError: () => show("스프린트 완료에 실패했습니다.", "error"),
       onSettled: () => setActionId(null),
     });
   };
@@ -321,10 +309,9 @@ export default function SprintsPage({
               onEdit={setEditTarget}
               onAssign={setAssignTarget}
               onStart={handleStart}
-              onComplete={handleComplete}
+              onComplete={setCompleteTarget}
               onDelete={handleDelete}
               isStarting={isStarting && actionId === sprint.id}
-              isCompleting={isCompleting && actionId === sprint.id}
               isDeleting={isDeleting && actionId === sprint.id}
             />
           ))}
@@ -345,6 +332,15 @@ export default function SprintsPage({
           sprint={editTarget}
           onClose={() => setEditTarget(null)}
           onSuccess={() => show("스프린트가 수정되었습니다.")}
+        />
+      )}
+
+      {completeTarget && (
+        <CompleteSprintModal
+          projectId={projectId}
+          sprint={completeTarget}
+          onClose={() => setCompleteTarget(null)}
+          onSuccess={() => show("스프린트가 완료되었습니다.")}
         />
       )}
 

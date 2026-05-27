@@ -1,5 +1,6 @@
 import apiClient from "./client";
 import type {
+  CompleteSprintRequest,
   CreateSprintRequest,
   SprintResponse,
   UpdateSprintRequest,
@@ -40,8 +41,11 @@ export async function startSprint(sprintId: string): Promise<SprintResponse> {
   return res.data.data;
 }
 
-export async function completeSprint(sprintId: string): Promise<SprintResponse> {
-  const res = await apiClient.post(`/v1/sprints/${sprintId}/complete`, {});
+export async function completeSprint(
+  sprintId: string,
+  data: CompleteSprintRequest,
+): Promise<SprintResponse> {
+  const res = await apiClient.post(`/v1/sprints/${sprintId}/complete`, data);
   return res.data.data;
 }
 

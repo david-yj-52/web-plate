@@ -36,3 +36,17 @@ export async function deleteComment(
 ): Promise<void> {
   await apiClient.delete(`/v1/issues/${issueId}/comments/${commentId}`);
 }
+
+export async function addReaction(
+  commentId: string,
+  emoji: string,
+): Promise<void> {
+  await apiClient.post(`/v1/comments/${commentId}/reactions`, { emoji });
+}
+
+export async function removeReaction(
+  commentId: string,
+  emoji: string,
+): Promise<void> {
+  await apiClient.delete(`/v1/comments/${commentId}/reactions/${encodeURIComponent(emoji)}`);
+}

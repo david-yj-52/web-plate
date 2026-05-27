@@ -26,3 +26,10 @@ export interface UpdateSprintRequest {
   startDt?: string;
   endDt?: string;
 }
+
+export type CompleteSprintIncompleteAction = "BACKLOG" | "NEXT_SPRINT";
+
+export interface CompleteSprintRequest {
+  incompleteIssueAction: CompleteSprintIncompleteAction;
+  nextSprintId?: string;
+}

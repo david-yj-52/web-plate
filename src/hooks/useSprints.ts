@@ -11,7 +11,11 @@ import {
   startSprint,
   updateSprint,
 } from "@/lib/api/sprints";
-import type { CreateSprintRequest, UpdateSprintRequest } from "@/types/sprint";
+import type {
+  CompleteSprintRequest,
+  CreateSprintRequest,
+  UpdateSprintRequest,
+} from "@/types/sprint";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 export function useSprints(projectId: string) {
@@ -75,9 +79,16 @@ export function useStartSprint(projectId: string) {
 export function useCompleteSprint(projectId: string) {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: (sprintId: string) => completeSprint(sprintId),
+    mutationFn: ({
+      sprintId,
+      data,
+    }: {
+      sprintId: string;
+      data: CompleteSprintRequest;
+    }) => completeSprint(sprintId, data),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["sprints", projectId] });
+      queryClient.invalidateQueries({ queryKey: ["issues", projectId] });
     },
   });
 }

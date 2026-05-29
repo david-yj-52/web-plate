@@ -1,7 +1,7 @@
 "use client";
 
 import { useToast } from "@/components/ui/Toast";
-import type { NotificationItem } from "@/lib/api/notifications";
+import type { NotificationItem, NotificationPage } from "@/lib/api/notifications";
 import { useQueryClient } from "@tanstack/react-query";
 import { useSession } from "next-auth/react";
 import { useEffect, useRef } from "react";
@@ -31,7 +31,7 @@ export function useNotifications() {
       }
 
       const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL ?? "";
-      const token = (sessionRef.current as any)?.accessToken;
+      const token = sessionRef.current?.user?.accessToken;
       const qs = token ? `?token=${encodeURIComponent(token)}` : "";
       const url = `${backendUrl}/api/v1/notifications/subscribe${qs}`;
 
@@ -42,9 +42,13 @@ export function useNotifications() {
         retriesRef.current = 0;
         try {
           const notification: NotificationItem = JSON.parse(event.data);
-          queryClient.setQueryData<NotificationItem[]>(
+          queryClient.setQueryData<NotificationPage>(
             ["notifications", "recent"],
-            (old) => [notification, ...(old ?? [])].slice(0, 10),
+            (old) => ({
+              ...(old ?? { content: [], totalElements: 0, totalPages: 1, number: 0, size: 10 }),
+              content: [notification, ...(old?.content ?? [])].slice(0, 10),
+              totalElements: (old?.totalElements ?? 0) + 1,
+            }),
           );
           queryClient.setQueryData<number>(
             ["notifications-unread-count"],

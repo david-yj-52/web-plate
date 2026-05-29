@@ -3,8 +3,9 @@
 import { getNotifications, markAllRead, markRead } from "@/lib/api/notifications";
 import type { NotificationItem } from "@/lib/api/notifications";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { AtSign, Bell, MessageSquare, RefreshCw, UserCheck } from "lucide-react";
+import { AtSign, Bell, ChevronLeft, ChevronRight, MessageSquare, RefreshCw, UserCheck } from "lucide-react";
 import { useRouter } from "next/navigation";
+import { useState } from "react";
 
 function relativeTime(dateStr: string): string {
   const diffMs = Date.now() - new Date(dateStr).getTime();
@@ -24,21 +25,25 @@ const TYPE_ICON: Record<string, React.ReactNode> = {
   MENTION: <AtSign className="h-5 w-5 text-purple-500" />,
 };
 
+const PAGE_SIZE = 20;
+
 export default function NotificationsPage() {
   const router = useRouter();
   const queryClient = useQueryClient();
+  const [page, setPage] = useState(0);
 
   const { data: notifPage, isLoading } = useQuery({
-    queryKey: ["notifications", "all"],
-    queryFn: () => getNotifications(0, 50),
+    queryKey: ["notifications", page],
+    queryFn: () => getNotifications(page, PAGE_SIZE),
   });
 
   const notifications = notifPage?.content ?? [];
+  const totalPages = notifPage?.totalPages ?? 0;
 
   const markReadMut = useMutation({
     mutationFn: markRead,
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["notifications"] });
+      queryClient.invalidateQueries({ queryKey: ["notifications", page] });
       queryClient.invalidateQueries({ queryKey: ["notifications-unread-count"] });
     },
   });
@@ -48,6 +53,7 @@ export default function NotificationsPage() {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["notifications"] });
       queryClient.invalidateQueries({ queryKey: ["notifications-unread-count"] });
+      setPage(0);
     },
   });
 
@@ -131,6 +137,28 @@ export default function NotificationsPage() {
               </li>
             ))}
           </ul>
+        </div>
+      )}
+
+      {totalPages > 1 && (
+        <div className="mt-4 flex items-center justify-center gap-2">
+          <button
+            disabled={page === 0}
+            onClick={() => setPage((p) => p - 1)}
+            className="flex h-8 w-8 items-center justify-center rounded-lg border border-gray-200 hover:bg-gray-50 disabled:opacity-40"
+          >
+            <ChevronLeft className="h-4 w-4" />
+          </button>
+          <span className="text-sm text-gray-600">
+            {page + 1} / {totalPages}
+          </span>
+          <button
+            disabled={page >= totalPages - 1}
+            onClick={() => setPage((p) => p + 1)}
+            className="flex h-8 w-8 items-center justify-center rounded-lg border border-gray-200 hover:bg-gray-50 disabled:opacity-40"
+          >
+            <ChevronRight className="h-4 w-4" />
+          </button>
         </div>
       )}
     </div>

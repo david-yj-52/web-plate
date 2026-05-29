@@ -1,6 +1,6 @@
 "use client";
 
-import { useSavedFilters, useSaveFilter, useSearchIssues } from "@/hooks/useSearch";
+import { useSavedFilters, useSaveFilter, useDeleteFilter, useSearchIssues } from "@/hooks/useSearch";
 import { useProjects } from "@/hooks/useProjects";
 import type { SavedFilter, SearchIssuesParams } from "@/lib/api/search";
 import type { Priority } from "@/types/issue";
@@ -12,8 +12,9 @@ import {
   Search,
   X,
 } from "lucide-react";
+import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useCallback, useMemo, useState } from "react";
+import { Suspense, useCallback, useMemo, useState } from "react";
 
 const PRIORITIES: { value: Priority; label: string }[] = [
   { value: "HIGHEST", label: "최상" },
@@ -118,7 +119,7 @@ function SaveFilterModal({
   );
 }
 
-export default function SearchPage() {
+function SearchPageContent() {
   const router = useRouter();
   const rawSearchParams = useSearchParams();
   const params = useMemo(
@@ -132,6 +133,7 @@ export default function SearchPage() {
   const { data: projects } = useProjects();
   const { data: savedFilters } = useSavedFilters();
   const saveFilterMut = useSaveFilter();
+  const deleteFilterMut = useDeleteFilter();
 
   const { data: searchResult, isLoading } = useSearchIssues(params, !!params.q);
 
@@ -228,6 +230,13 @@ export default function SearchPage() {
         >
           검색
         </button>
+        <Link
+          href="/search/advanced"
+          className="flex h-10 items-center gap-1.5 rounded-lg border border-gray-200 bg-white px-4 text-sm font-medium text-gray-600 hover:border-blue-300 hover:bg-blue-50 hover:text-blue-600 transition-colors"
+          title="CQL 고급 검색"
+        >
+          고급 검색 (CQL)
+        </Link>
       </div>
 
       {/* Active filters + controls */}
@@ -270,13 +279,21 @@ export default function SearchPage() {
               </p>
               <ul className="space-y-1">
                 {savedFilters.map((f) => (
-                  <li key={f.id}>
+                  <li key={f.id} className="flex items-center gap-1">
                     <button
                       onClick={() => applySavedFilter(f)}
-                      className="w-full truncate rounded-lg px-2 py-1.5 text-left text-sm text-gray-700 hover:bg-gray-100"
+                      className="min-w-0 flex-1 truncate rounded-lg px-2 py-1.5 text-left text-sm text-gray-700 hover:bg-gray-100"
                     >
                       <Filter className="mr-1.5 inline h-3.5 w-3.5 text-gray-400" />
                       {f.name}
+                    </button>
+                    <button
+                      onClick={() => deleteFilterMut.mutate(f.id)}
+                      disabled={deleteFilterMut.isPending}
+                      className="shrink-0 rounded p-0.5 text-gray-400 hover:bg-gray-100 hover:text-gray-600 disabled:opacity-40"
+                      title="필터 삭제"
+                    >
+                      <X className="h-3.5 w-3.5" />
                     </button>
                   </li>
                 ))}
@@ -537,5 +554,19 @@ export default function SearchPage() {
         />
       )}
     </div>
+  );
+}
+
+export default function SearchPage() {
+  return (
+    <Suspense
+      fallback={
+        <div className="mx-auto max-w-6xl px-4 py-10 text-center text-slate-400">
+          로딩 중...
+        </div>
+      }
+    >
+      <SearchPageContent />
+    </Suspense>
   );
 }

@@ -11,6 +11,8 @@ const TABS = [
   { key: "general", label: "기본 정보", suffix: "" },
   { key: "members", label: "멤버", suffix: "/members" },
   { key: "workflow", label: "워크플로우", suffix: "/workflow" },
+  { key: "git", label: "Git 연동", suffix: "/git" },
+  { key: "automation", label: "자동화", suffix: "/automation" },
 ];
 
 export default function SettingsSideNav({ projectId }: Props) {

@@ -1,6 +1,7 @@
 import { auth } from "@/auth";
-import { api } from "@/lib/api";
 import { NextResponse } from "next/server";
+
+const API_BASE_URL = process.env.BACKEND_URL;
 
 async function proxyHandler(
   request: Request,
@@ -14,25 +15,45 @@ async function proxyHandler(
   const session = await auth();
 
   try {
-    let body = undefined;
+    let body: BodyInit | undefined = undefined;
+    let isFormData = false;
+
     if (method !== "GET" && method !== "HEAD") {
       const contentType = request.headers.get("content-type");
       if (contentType?.includes("application/json")) {
-        body = await request.json();
+        const json = await request.json();
+        body = JSON.stringify(json);
+      } else if (contentType?.includes("multipart/form-data")) {
+        body = await request.formData();
+        isFormData = true;
       }
     }
 
+    // form-data는 Content-Type 생략 → fetch가 boundary 포함해서 자동 설정
     const headers: Record<string, string> = {};
     if (session?.user?.accessToken) {
       headers.Authorization = `Bearer ${session.user.accessToken}`;
     }
+    if (!isFormData) {
+      headers["Content-Type"] = "application/json";
+    }
 
-    const result = await api.fetcher(targetPath, {
+    console.log(`${API_BASE_URL}${targetPath}`);
+    const res = await fetch(`${API_BASE_URL}${targetPath}`, {
       method,
-      body: body ? JSON.stringify(body) : undefined,
+      body,
       headers,
     });
 
+    if (!res.ok) {
+      const errBody = await res.json().catch(() => ({ error: res.statusText }));
+      const err: any = new Error(`Backend API Error: ${res.status}`);
+      err.status = res.status;
+      err.body = errBody;
+      throw err;
+    }
+
+    const result = await res.json();
     return NextResponse.json(result);
   } catch (error: any) {
     console.error(`Proxy Error (${method} ${targetPath}):`, error);

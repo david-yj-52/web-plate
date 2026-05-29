@@ -1,5 +1,6 @@
 "use client";
 
+import { AttachmentSection } from "@/components/issue/AttachmentSection";
 import { CommentSection } from "@/components/issue/CommentSection";
 import { useToast } from "@/components/ui/Toast";
 import {
@@ -226,6 +227,11 @@ export default function IssueDetailPage({
               multiline
               className="text-sm text-slate-700 whitespace-pre-wrap min-h-[80px]"
             />
+          </div>
+
+          {/* Attachments */}
+          <div className="border-t border-slate-100 pt-6">
+            <AttachmentSection issueId={issueId} />
           </div>
 
           {/* Comments */}

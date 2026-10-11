@@ -4,9 +4,9 @@
 import dynamic from "next/dynamic";
 
 const SolaceTestContent = dynamic(() => import("./solaceTestContent"), {
-  ssr: false,
+    ssr: false,
 });
 
 export default function SolaceTestPage() {
-  return <SolaceTestContent />;
+    return <SolaceTestContent/>;
 }

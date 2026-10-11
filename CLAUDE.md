@@ -2,17 +2,17 @@
 
 ## 프로젝트 개요
 
-| 항목 | 내용 |
-|------|------|
-| **역할** | CIRA 서비스 프론트엔드 (Next.js App Router) |
-| **프레임워크** | Next.js 16 (App Router, React 19) |
-| **언어** | TypeScript 5 |
-| **스타일** | Tailwind CSS v3 (유틸리티 클래스 기반, inline style 금지) |
-| **상태 관리** | TanStack Query v5 (서버 상태) / Zustand v5 (클라이언트 상태) |
-| **폼** | react-hook-form + zod |
-| **에디터** | Tiptap (WikiEditor 등 rich-text 영역) |
-| **차트** | Recharts |
-| **인증** | next-auth v5 (Credentials Provider → JWT) |
+| 항목           | 내용                                                         |
+|----------------|--------------------------------------------------------------|
+| **역할**       | CIRA 서비스 프론트엔드 (Next.js App Router)                  |
+| **프레임워크** | Next.js 16 (App Router, React 19)                            |
+| **언어**       | TypeScript 5                                                 |
+| **스타일**     | Tailwind CSS v3 (유틸리티 클래스 기반, inline style 금지)    |
+| **상태 관리**  | TanStack Query v5 (서버 상태) / Zustand v5 (클라이언트 상태) |
+| **폼**         | react-hook-form + zod                                        |
+| **에디터**     | Tiptap (WikiEditor 등 rich-text 영역)                        |
+| **차트**       | Recharts                                                     |
+| **인증**       | next-auth v5 (Credentials Provider → JWT)                    |
 
 ---
 
@@ -75,8 +75,8 @@ src/
 ## 상태 관리 규칙
 
 - 서버 데이터: **TanStack Query** — `queryKey` 컨벤션: `[도메인, id, ...필터]`
-- 변경(mutation) 후 관련 쿼리 무효화: `queryClient.invalidateQueries({ queryKey: [도메인, ...] })`
-- 전역 클라이언트 상태(UI 상태 등): **Zustand** store
+- 변경 (mutation) 후 관련 쿼리 무효화: `queryClient.invalidateQueries({ queryKey: [도메인, ...] })`
+- 전역 클라이언트 상태 (UI 상태 등): **Zustand** store
 - `useState` 는 컴포넌트 내 로컬 UI 상태에만 사용
 
 ---
@@ -94,28 +94,28 @@ src/
 
 ## 네이밍 컨벤션
 
-| 유형 | 패턴 | 예시 |
-|------|------|------|
-| 페이지 | `page.tsx` | `issues/page.tsx` |
-| 컴포넌트 | PascalCase | `IssueTable.tsx` |
-| 훅 | `use` + PascalCase | `useIssues.ts` |
-| API 함수 파일 | camelCase | `issues.ts` |
-| 타입 파일 | camelCase | `issue.ts` |
+| 유형          | 패턴               | 예시              |
+|---------------|--------------------|-------------------|
+| 페이지        | `page.tsx`         | `issues/page.tsx` |
+| 컴포넌트      | PascalCase         | `IssueTable.tsx`  |
+| 훅            | `use` + PascalCase | `useIssues.ts`    |
+| API 함수 파일 | camelCase          | `issues.ts`       |
+| 타입 파일     | camelCase          | `issue.ts`        |
 
 ---
 
 ## 주요 의존성 버전
 
-| 패키지 | 버전 |
-|--------|------|
-| next | 16.1.3 |
-| react | 19.0.1 |
-| next-auth | 5.0.0-beta.30 |
-| @tanstack/react-query | ^5.100.14 |
-| tailwindcss | ^3.4.19 |
-| zustand | ^5.0.1 |
-| recharts | ^3.8.1 |
-| @tiptap/react | ^2.10.4 |
+| 패키지                | 버전          |
+|-----------------------|---------------|
+| next                  | 16.1.3        |
+| react                 | 19.0.1        |
+| next-auth             | 5.0.0-beta.30 |
+| @tanstack/react-query | ^5.100.14     |
+| tailwindcss           | ^3.4.19       |
+| zustand               | ^5.0.1        |
+| recharts              | ^3.8.1        |
+| @tiptap/react         | ^2.10.4       |
 
 ---
 

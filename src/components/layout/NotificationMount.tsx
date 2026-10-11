@@ -1,8 +1,8 @@
 "use client";
 
-import { useNotifications } from "@/hooks/useNotifications";
+import {useNotifications} from "@/hooks/useNotifications";
 
 export default function NotificationMount() {
-  const { ToastComponent } = useNotifications();
-  return <>{ToastComponent}</>;
+    const {ToastComponent} = useNotifications();
+    return <>{ToastComponent}</>;
 }

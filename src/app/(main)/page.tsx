@@ -1,11 +1,11 @@
-import { auth } from "@/auth";
-import { redirect } from "next/navigation";
+import {auth} from "@/auth";
+import {redirect} from "next/navigation";
 
 export default async function RootPage() {
-  const session = await auth();
-  if (!session) {
-    redirect("/login");
-  } else {
-    redirect("/projects");
-  }
+    const session = await auth();
+    if (!session) {
+        redirect("/login");
+    } else {
+        redirect("/projects");
+    }
 }

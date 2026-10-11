@@ -1,18 +1,14 @@
-import TodoItem from "@/components/TodoItem";
-import { addTodos, getTodos } from "./actions";
-import AgentStatusButton from "@/components/AgentStatusButton";
-import { auth } from "@/auth";
-import LoginButton from "@/components/LoginButton";
-import { redirect } from "next/navigation";
+import {auth} from "@/auth";
+import {redirect} from "next/navigation";
 
 export default async function HomePage() {
-  const session = await auth();
+    const session = await auth();
 
-  if (!session) {
-    redirect("/login");
-  } else {
-    redirect("/todo");
-  }
+    if (!session) {
+        redirect("/login");
+    } else {
+        redirect("/todo");
+    }
 }
 
 // export default async function Home() {
